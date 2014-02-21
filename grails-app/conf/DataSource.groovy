@@ -1,8 +1,21 @@
 dataSource {
     pooled = true
-    driverClassName = "org.h2.Driver"
-    username = "sa"
-    password = ""
+    dbCreate = "update"
+    url = "jdbc:mysql://localhost/yourDB"
+    driverClassName = "com.mysql.jdbc.Driver"
+    dialect = org.hibernate.dialect.MySQL5InnoDBDialect
+    username = "appuser"
+    password = "appuser"
+    properties {
+        maxActive = 50
+        maxIdle = 25
+        minIdle = 5
+        initialSize = 5
+        minEvictableIdleTimeMillis = 60000
+        timeBetweenEvictionRunsMillis = 60000
+        maxWait = 10000
+        validationQuery = "/* ping */"
+    }
 }
 hibernate {
     cache.use_second_level_cache = true
