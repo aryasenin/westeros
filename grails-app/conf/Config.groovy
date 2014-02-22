@@ -15,20 +15,36 @@ grails.project.groupId = appName // change this to alter the default package nam
 
 // The ACCEPT header will not be used for content negotiation for user agents containing the following strings (defaults to the 4 major rendering engines)
 grails.mime.disable.accept.header.userAgents = ['Gecko', 'WebKit', 'Presto', 'Trident']
-grails.mime.types = [ // the first one is the default format
-    all:           '*/*', // 'all' maps to '*' or the first available format in withFormat
-    atom:          'application/atom+xml',
-    css:           'text/css',
-    csv:           'text/csv',
-    form:          'application/x-www-form-urlencoded',
-    html:          ['text/html','application/xhtml+xml'],
-    js:            'text/javascript',
-    json:          ['application/json', 'text/json'],
-    multipartForm: 'multipart/form-data',
-    rss:           'application/rss+xml',
-    text:          'text/plain',
-    hal:           ['application/hal+json','application/hal+xml'],
-    xml:           ['text/xml', 'application/xml']
+grails.mime.types = [html: ['text/html', 'application/xhtml+xml'],
+        xml: ['text/xml', 'application/xml'],
+        text: 'text/plain',
+        js: 'text/javascript',
+        rss: 'application/rss+xml',
+        atom: 'application/atom+xml',
+        css: 'text/css',
+        csv: 'text/csv',
+        pdf: 'application/pdf',
+        rtf: 'application/rtf',
+        excel: ['application/octet-stream'],
+        xls: ['application/vnd.ms-excel', 'application/msexcel', 'application/xls', ''],
+        ods: 'application/vnd.oasis.opendocument.spreadsheet',
+        all: '*/*',
+        json: ['application/json', 'text/json'],
+        doc: ['application/msword'],
+        docx: ['application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
+        xlsx: ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
+        mp3: ['audio/mp3'],
+        zip: ['application/zip'],
+        rar: ['application/x-rar-compressed'],
+        form: 'application/x-www-form-urlencoded',
+        jpg: ['image/jpg'],
+        jpeg: ['image/jpeg'],
+        png: ['image/png'],
+        tiff: ['image/tiff'],
+        ico: ['image/vnd.microsoft.icon'],
+        ppt: ['application/vnd.ms-powerpoint'],
+        pptx: ['application/vnd.openxmlformats-officedocument.presentationml.presentation'],
+        multipartForm: 'multipart/form-data'
 ]
 
 // URL Mapping Cache Max Size, defaults to 5000
@@ -63,7 +79,7 @@ grails {
         }
     }
 }
- 
+
 grails.converters.encoding = "UTF-8"
 // scaffolding templates configuration
 grails.scaffolding.templates.domainSuffix = 'Instance'
@@ -75,7 +91,7 @@ grails.enable.native2ascii = true
 // packages to include in Spring bean scanning
 grails.spring.bean.packages = []
 // whether to disable processing of multi part requests
-grails.web.disable.multipart=false
+grails.web.disable.multipart = false
 
 // request parameters to mask when logging exceptions
 grails.exceptionresolver.params.exclude = ['password']
@@ -93,23 +109,88 @@ environments {
     }
 }
 
-// log4j configuration
-log4j = {
-    // Example of changing the log pattern for the default console appender:
-    //
-    //appenders {
-    //    console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
-    //}
 
-    error  'org.codehaus.groovy.grails.web.servlet',        // controllers
-           'org.codehaus.groovy.grails.web.pages',          // GSP
-           'org.codehaus.groovy.grails.web.sitemesh',       // layouts
-           'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
-           'org.codehaus.groovy.grails.web.mapping',        // URL mapping
-           'org.codehaus.groovy.grails.commons',            // core / classloading
-           'org.codehaus.groovy.grails.plugins',            // plugins
-           'org.codehaus.groovy.grails.orm.hibernate',      // hibernate integration
-           'org.springframework',
-           'org.hibernate',
-           'net.sf.ehcache.hibernate'
+environments {
+    development {
+        // log4j configuration en developpement
+        log4j = {
+            appenders {
+                rollingFile name: "myAppender", maxFileSize: 10240000, file: "/tmp/${appName}.log"
+            }
+
+            error 'org.codehaus.groovy.grails.web.servlet',  //  controllers
+                    'org.codehaus.groovy.grails.web.pages', //  GSP
+                    'org.codehaus.groovy.grails.web.sitemesh', //  layouts
+                    'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
+                    'org.codehaus.groovy.grails.web.mapping', // URL mapping
+                    'org.codehaus.groovy.grails.commons', // core / classloading
+                    'org.codehaus.groovy.grails.plugins', // plugins
+                    'org.codehaus.groovy.grails.orm.hibernate', // hibernate integration
+                    'org.springframework',
+                    'org.hibernate',
+                    'net.sf.ehcache.hibernate'
+
+            warn myAppender: 'grails.app'
+            info myAppender: 'grails.app'
+            debug myAppender: 'grails.app'
+
+            //debug myAppender: 'grails.app.service'
+
+        }
+    }
+    production {
+        // log4j configuration
+        log4j = {
+            // Example of changing the log pattern for the default console appender:
+            //
+            //appenders {
+            //    console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
+            //}
+
+            error 'org.codehaus.groovy.grails.web.servlet',        // controllers
+                    'org.codehaus.groovy.grails.web.pages',          // GSP
+                    'org.codehaus.groovy.grails.web.sitemesh',       // layouts
+                    'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
+                    'org.codehaus.groovy.grails.web.mapping',        // URL mapping
+                    'org.codehaus.groovy.grails.commons',            // core / classloading
+                    'org.codehaus.groovy.grails.plugins',            // plugins
+                    'org.codehaus.groovy.grails.orm.hibernate',      // hibernate integration
+                    'org.springframework',
+                    'org.hibernate',
+                    'net.sf.ehcache.hibernate'
+
+        }
+    }
 }
+
+
+grails.mail.jndiName = "java:comp/env/mail/thewallmail"
+
+grails.naming.entries = [
+        "jdbc/thewall": [
+                type: "javax.sql.DataSource", //required
+                auth: "Container", // optional
+                description: "Source de données pour la base de The Wall", //optional
+                driverClassName: "com.mysql.jdbc.Driver",
+                dialect: "org.hibernate.dialect.MySQL5InnoDBDialect",
+                url: "jdbc:mysql://localhost/thewall?autoreconnect=true",
+                username: "appuser",
+                password: "appuser",
+                maxActive: "30",
+                maxIdle: "4"
+        ],
+        "mail/thewallmail": [
+                auth: "Container",
+                type: "javax.mail.Session",
+                username: "westeros.thewall@gmail.com",
+                password: "thewall%2014",
+                "mail.user": "westeros.thewall@gmail.com",
+                "mail.smtp.host": "smtp.gmail.com",
+                "mail.smtp.port": "465",
+                "mail.smtp.auth": "true",
+                "mail.smtp.socketFactory.port": "465",
+                "mail.smtp.socketFactory.class": "javax.net.ssl.SSLSocketFactory",
+                "mail.smtp.socketFactory.fallback": "false",
+                "mail.smtp.starttls.enable": "true"
+        ]
+]
