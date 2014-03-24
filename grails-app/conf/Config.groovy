@@ -172,7 +172,7 @@ grails.naming.entries = [
                 auth: "Container", // optional
                 description: "Source de données pour la base de The Wall", //optional
                 driverClassName: "com.mysql.jdbc.Driver",
-                dialect: "org.hibernate.dialect.MySQL5InnoDBDialect",
+                //dialect: "org.hibernate.dialect.MySQL5InnoDBDialect",
                 url: "jdbc:mysql://localhost/thewall?autoreconnect=true",
                 username: "appuser",
                 password: "appuser",
